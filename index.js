@@ -11,8 +11,27 @@ function fetchCatFact() {
     });
 }
 
-// call the function to fetch a cat fact on page load
-fetchCatFact();
+function fetchCatBreeds() {
+  fetch("https://catfact.ninja/breeds")
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      const breedsList = document.getElementById("breeds-list");
+      breedsList.innerHTML = ""; // clear previous list
+      const breeds = data.data.slice(0, 5); // show 5 breeds
+      breeds.forEach(breed => {
+        const li = document.createElement("li");
+        li.textContent = `${breed.breed} (${breed.country})`;
+        breedsList.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error("Error fetching cat breeds:", error);
+    });
+}
 
-// btn handler
+// On page load
+fetchCatFact();
+fetchCatBreeds();
+
 document.getElementById("refresh-btn").addEventListener("click", fetchCatFact);
